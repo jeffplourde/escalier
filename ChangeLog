@@ -1,0 +1,38 @@
+2011-07-20  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Moved escalier to GitHub!
+
+2011-06-11  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Released v0.1 of Escalier.
+
+	* Updated the Twitter Example.
+
+2011-06-09  Angelo Corsaro  <angelo@icorsaro.net>
+    * Added automatic compilation of IDL files as part of
+      a new configure script.
+
+      Updated installation informations.
+
+2011-05-23  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* project/build/EscalierProject.scala: Added to the repo as it was
+	currently missing and causing build errors due to missing
+	dependencies.
+
+2011-05-19  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Added support for reactive functional programing on DDS
+	DataReader
+
+	* Added DataReader event
+
+	* Added ABOUT, AUTHORS and INSTALL files
+
+2011-05-18  Angelo Corsaro  <angelo@icorsaro.net>
+	* Added ContentFilteredTopics and performed some refactoring/cleanup
+	
+	* Fixed deprecation warning raised by scala 2.9.0
+	
+	* Refactored escalier to use SBT as the standard build-tool
+

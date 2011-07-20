@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cp $OSPL_HOME/jar/dcpssaj.jar ./lib
+pushd $PWD &>/dev/null
+cd src/main/scala
+echo "Compiling IDL files..."
+idlpp -S -l java ../resources/idl/TempSensor.idl
+idlpp -S -l java ../resources/idl/ishape.idl
+idlpp -S -l java ../resources/idl/twit.idl
+idlpp -S -l java ../resources/idl/Latency.idl
+echo "Now you should do:"
+echo "\$ sbt update"
+echo "\$ sbt compile"
+echo ""
+echo "Have fun with Escalier!"
+echo ""
+popd &>/dev/null

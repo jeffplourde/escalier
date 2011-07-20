@@ -1,0 +1,21 @@
+# Escalier Ignored Files
+
+
+escalier.iml
+.idea
+.idea/*
+*~
+*.class
+*.jar
+
+# Ignore dependencies pulled in by SBT
+project/boot
+project/boot/*
+project/target
+project/target/*
+
+# Ignore built files
+target
+target/*
+
+lib

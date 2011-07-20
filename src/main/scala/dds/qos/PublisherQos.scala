@@ -1,0 +1,8 @@
+package dds.qos
+
+object PublisherQos {
+	def apply() = new PublisherQos(Partition(""))
+}
+class PublisherQos(val partition: Partition) {
+  def <=(p: Partition) = new PublisherQos(p)
+}
