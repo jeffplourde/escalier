@@ -7,14 +7,45 @@ import dds.qos.{TopicQos, PublisherQos, SubscriberQos}
 
 class DomainParticipantImpl(domain: Int) extends DomainParticipant(domain) {
 
+    val dpfClass = Class.forName("DDS.DomainParticipantFactory")
+    var domainIsInt = true
+    val createParticipantMethod: java.lang.reflect.Method = {
+      try {
+        dpfClass.getMethod("create_participant",
+                           classOf[Int],
+                           classOf[DDS.DomainParticipantQos],
+                           classOf[DDS.DomainParticipantListener],
+                           classOf[Int])
+      } catch {
+        case e: NoSuchMethodException =>
+          try {
+            domainIsInt = false
+            dpfClass.getMethod("create_participant",
+                               classOf[String],
+                               classOf[DDS.DomainParticipantQos],
+                               classOf[DDS.DomainParticipantListener],
+                               classOf[Int])
+          } catch {
+            case e: Exception => e.printStackTrace ; null
+          }
+        case e: Exception => e.printStackTrace ; null
+      }
+    }
+
 	val ddsPeer : DDS.DomainParticipant = createDdsDP
 	
 	private def createDdsDP() : DDS.DomainParticipant = {
 		val dpf = DDS.DomainParticipantFactory.get_instance()
 		val holder = new DDS.DomainParticipantQosHolder
 		dpf.get_default_participant_qos(holder)
-    // @TODO: Pass the proper domain
-		dpf.create_participant("", holder.value, null, DDS.STATUS_MASK_ANY_V1_2.value)
+    if (domainIsInt) {
+      println("Connecting on Domain '"+domain+"'")
+      createParticipantMethod.invoke(dpf, domain.asInstanceOf[java.lang.Integer], holder.value, null, DDS.STATUS_MASK_ANY_V1_2.value.asInstanceOf[java.lang.Integer]).asInstanceOf[DDS.DomainParticipant]
+    } else {
+      println("WARNING: you're using OpenSpliceDDS v5.x. Domain is ignored and 'null' is used instead.")
+      createParticipantMethod.invoke(dpf, null, holder.value, null, DDS.STATUS_MASK_ANY_V1_2.value.asInstanceOf[java.lang.Integer]).asInstanceOf[DDS.DomainParticipant]
+    }
+
 	}
 	
 	

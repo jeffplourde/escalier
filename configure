@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cp $OSPL_HOME/jar/dcpssaj.jar ./lib
+mkdir lib
+cp $OSPL_HOME/jar/dcpssaj.jar ./lib/
 pushd $PWD &>/dev/null
 cd src/main/scala
 echo "Compiling IDL files..."

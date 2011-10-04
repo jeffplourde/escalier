@@ -1,12 +1,21 @@
 # Escalier Ignored Files
 
-
-escalier.iml
-.idea
-.idea/*
 *~
 *.class
 *.jar
+*.log
+
+# Intellij IDEA files
+escalier.iml
+.idea
+.idea/*
+
+
+# Eclipse files
+.classpath
+.project
+.settings
+.scala_dependencies
 
 # Ignore dependencies pulled in by SBT
 project/boot
