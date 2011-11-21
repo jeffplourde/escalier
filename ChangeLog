@@ -1,4 +1,9 @@
 2011-07-20  Angelo Corsaro  <angelo@icorsaro.net>
+    * Extended DataReader API with support for take
+    * Extended read/take API with sample/instance/view flags
+
+
+2011-07-20  Angelo Corsaro  <angelo@icorsaro.net>
 
 	* Moved escalier to GitHub!
 

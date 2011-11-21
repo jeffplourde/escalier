@@ -1,11 +1,11 @@
 package dds.ospl
 
-import dds.sub.DataReader
 import dds.qos.DataReaderQos
 import dds.ospl.Runtime._
 import dds.BaseTopic
 import java.lang.RuntimeException
 import org.opensplice.dds.dcps.FooDataReaderImpl
+import dds.sub.{SampleSelector, SampleState, DataReader}
 
 class DataReaderImpl[T](p: SubscriberImpl,
                         t: BaseTopic[T],
@@ -48,14 +48,72 @@ class DataReaderImpl[T](p: SubscriberImpl,
   }
 
   def read() : Array[T] = read(DDS.NOT_READ_SAMPLE_STATE.value)
+  def read(s: SampleSelector) = {
+    import dds.sub.SampleSelector._
+    s match {
+      case NewData =>
+        read(DDS.NOT_READ_SAMPLE_STATE.value,
+          DDS.ALIVE_INSTANCE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value)
+      case AllData =>
+        read(DDS.ANY_SAMPLE_STATE.value,
+          DDS.ALIVE_INSTANCE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value)
+      case AllSamples =>
+        read(DDS.ANY_SAMPLE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value)
+    }
+  }
+
+  def take() : Array[T] = take(DDS.NOT_READ_SAMPLE_STATE.value)
+  def take(s: SampleSelector) = {
+    import dds.sub.SampleSelector._
+    s match {
+      case NewData =>
+        take(DDS.NOT_READ_SAMPLE_STATE.value,
+          DDS.ALIVE_INSTANCE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value)
+      case AllData =>
+        take(DDS.ANY_SAMPLE_STATE.value,
+          DDS.ALIVE_INSTANCE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value)
+      case AllSamples =>
+        take(DDS.ANY_SAMPLE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value,
+          DDS.ANY_INSTANCE_STATE.value)
+    }
+  }
+
 
   def history(): Array[T] = read(DDS.ANY_SAMPLE_STATE.value)
 
-  private def read(sampleState: Int): Array[T] = {
+  private def read(sampleState: Int): Array[T] =
+    read(sampleState,DDS.ANY_VIEW_STATE.value, DDS.ALIVE_INSTANCE_STATE.value)
+
+  private def read(sampleState: Int, viewState: Int, instanceState: Int): Array[T] = {
     import org.opensplice.dds.dcps.FooDataReaderImpl
     val data = dataSeqClass.newInstance
     val infoSeq = new DDS.SampleInfoSeqHolder
     FooDataReaderImpl.read(ddsPeer, copyCache, data, infoSeq, DDS.LENGTH_UNLIMITED.value,
+      sampleState, DDS.ANY_VIEW_STATE.value, DDS.ALIVE_INSTANCE_STATE.value)
+
+    val value = valueField.get(data)
+
+    value match {
+      case va: Array[T] => va
+      case _ => throw new RuntimeException
+    }
+  }
+
+  private def take(sampleState: Int): Array[T] =
+    take(sampleState,DDS.ANY_VIEW_STATE.value, DDS.ALIVE_INSTANCE_STATE.value)
+
+  private def take(sampleState: Int, viewState: Int, instanceState: Int): Array[T] = {
+    import org.opensplice.dds.dcps.FooDataReaderImpl
+    val data = dataSeqClass.newInstance
+    val infoSeq = new DDS.SampleInfoSeqHolder
+    FooDataReaderImpl.take(ddsPeer, copyCache, data, infoSeq, DDS.LENGTH_UNLIMITED.value,
       sampleState, DDS.ANY_VIEW_STATE.value, DDS.ALIVE_INSTANCE_STATE.value)
 
     val value = valueField.get(data)

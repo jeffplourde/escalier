@@ -28,3 +28,7 @@ target
 target/*
 
 lib
+
+# idlibs ignores
+./idlib/target/*
+./idlib/project/target/*

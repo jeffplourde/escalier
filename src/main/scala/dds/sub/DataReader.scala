@@ -41,8 +41,14 @@ abstract class DataReader[T](val sub: Subscriber,
   val reactions = new Reactions.Impl
 
   def read(): Array[T]
+  def read(s: SampleSelector): Array[T]
   def read(instance: T): Array[T]
+  def read[SampleSeqHolder](data: SampleSeqHolder): Unit
+
+  def take(): Array[T]
+  def take(s: SampleSelector): Array[T]
+
   def history(): Array[T]
   def history(instance: T): Array[T]
-  def read[SampleSeqHolder](data: SampleSeqHolder): Unit
+
 }
