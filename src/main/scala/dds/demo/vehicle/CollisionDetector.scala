@@ -49,10 +49,7 @@ object CollisionDetector {
                 VehicleDrawer.colors(VehicleDrawer.colors.length-1))
 
 
-
             lineDW ! l
-
-            println("("+ l.begin.x +", "+ l.begin.y +", "+ l.end.x +", "+ l.end.y +")")
           }
         })
       }

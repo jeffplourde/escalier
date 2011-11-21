@@ -38,8 +38,8 @@ object AverageShape {
     }
 
     reader.reactions += {
-      case e: DataAvailable[ShapeType] => {
-        val data = e.reader history
+      case e: DataAvailable[_] => {
+        val data = reader history
         val len = data.length
 
         val s = new ShapeType

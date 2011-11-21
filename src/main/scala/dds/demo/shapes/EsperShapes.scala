@@ -61,8 +61,8 @@ object EsperShapes {
     val runtime = cep.getEPRuntime
 
     reader.reactions += {
-      case e: DataAvailable[ShapeType] => {
-        (e.reader read) foreach(runtime sendEvent _)
+      case e: DataAvailable[_] => {
+        (reader read) foreach(runtime sendEvent _)
 
       }
     }

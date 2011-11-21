@@ -20,21 +20,26 @@ trait ConstrainedVehicleDynamics extends VehicleDynamics {
 
 trait BouncingVehicleDynamics extends ConstrainedVehicleDynamics {
 
+  var running: Boolean
+
   def bounceMatrix: Array[Array[Int]]
 
   def nextPosition = {
-    var newPos = position + motion
-    var newBound = (v: Vector2D) => new Region2D(v.x, v.y, bounds.width, bounds.height)
-    if (constraint contains newBound(newPos)) {
-      position = newPos
+    if (running) {
+      var newPos = position + motion
+      var newBound = (v: Vector2D) => new Region2D(v.x, v.y, bounds.width, bounds.height)
+      if (constraint contains newBound(newPos)) {
+        position = newPos
+      }
+      else {
+        motion = motion rotate bounceMatrix
+        newPos= position + motion
+      }
+      if (constraint contains newBound(newPos))
+        position = newPos
+      else
+        position
     }
-    else {
-      motion = motion rotate bounceMatrix
-      newPos= position + motion
-    }
-    if (constraint contains newBound(newPos))
-      position = newPos
-    else
-      position
+    else position
   }
 }

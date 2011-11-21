@@ -116,5 +116,6 @@ object VehicleDrawer {
         (vrDR read) foreach (vr => drawRegion(vr))
       }
     }
+    Thread.currentThread().join()
   }
 }

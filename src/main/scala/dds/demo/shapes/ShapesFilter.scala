@@ -37,7 +37,7 @@ object ShapesFilter {
 
 
     reader.reactions += {
-      case e: DataAvailable[ShapeType] =>  (e.reader read) foreach(writer write _)
+      case e: DataAvailable[_] =>  (reader read) foreach(writer write _)
     }
     Thread.currentThread.join
   }

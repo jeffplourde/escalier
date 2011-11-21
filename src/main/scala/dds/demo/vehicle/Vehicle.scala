@@ -4,14 +4,17 @@ import dds.demo.geometry.{Vector2D, Region2D}
 import org.opensplice.demo.{VehicleStatus, VehicleRegion}
 import dds.Topic
 import dds.pub.DataWriter
-
-
+/*
+import org.opensplice.DDS_RMI._
+import DDS_RMI.org.opensplice.demo.VehicleControlInterface
+ */
 class Vehicle(val vid: Int,
               var position: Vector2D,
               var bounds: Region2D,
               var constraint: Region2D,
-              var motion: Vector2D) extends BouncingVehicleDynamics {
+              var motion: Vector2D) extends /* VehicleControlInterface with */ BouncingVehicleDynamics with ControllableVehicle  {
 
+  var running = true
   def bounceMatrix =
     if (math.random > 0.5) Array(Array(-1, 0),Array(0,-1)) else Array(Array(-1, 0),Array(0,1))
 
@@ -29,7 +32,12 @@ object Vehicle {
   def main(args: Array[String]) {
     if (args.length < 8) {
       println("USAGE:\n\tVehicle <vid> <size> <constraints = x,y,width,height> <motion = dx, dy>")
+      sys.exit(0)
     }
+  /*
+   val runtime = CRuntime.getDefaultRuntime
+   runtime start(args)
+   */
     val vehicleStatusTopic = Topic[VehicleStatus]("TVehicleStatus")
     val vsDW = DataWriter[VehicleStatus](vehicleStatusTopic)
 
@@ -49,10 +57,15 @@ object Vehicle {
         constraints.y0 + (constraints.height/2).toInt)
 
     val vehicle = new Vehicle(vid, position, bounds, constraints, motion)
+    val name = "Vehicle-"
+    /*
+      DDS_Service.register_interface(vehicle, name + vid, vid, classOf[VehicleControlInterface])
+      println("Registered Vehicle = "+ name + vid)
+    */
 
-    val vregion = new VehicleRegion(vehicle.vid, vehicle.constraint.x0, vehicle.constraint.y0,
-        vehicle.constraint.width, vehicle.constraint.height)
     while (true) {
+      val vregion = new VehicleRegion(vehicle.vid, vehicle.constraint.x0, vehicle.constraint.y0,
+        vehicle.constraint.width, vehicle.constraint.height)
       vsDW ! vehicle
       vrDW ! vregion
       vehicle nextPosition

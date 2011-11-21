@@ -101,7 +101,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
     val value = valueField.get(data)
 
     value match {
-      case va: Array[T] => va
+      case va: Array[_] => va.asInstanceOf[Array[T]]
       case _ => throw new RuntimeException
     }
   }
@@ -119,7 +119,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
     val value = valueField.get(data)
 
     value match {
-      case va: Array[T] => va
+      case va: Array[_] => va.asInstanceOf[Array[T]]
       case _ => throw new RuntimeException
     }
   }
@@ -150,7 +150,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
     val value = valueField.get(data)
 
     value match {
-      case va: Array[T] => va
+      case va: Array[_] => va.asInstanceOf[Array[T]]
       case _ => throw new RuntimeException
     }
   }

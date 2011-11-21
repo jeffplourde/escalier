@@ -2,7 +2,7 @@ package dds.demo.ishapes
 
 import org.opensplice.demo.ShapeType
 import scala.util.Random
-import Math._
+import math._
 
 trait BouncingShape extends ShapeComponent {
 	

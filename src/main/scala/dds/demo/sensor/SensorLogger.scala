@@ -24,10 +24,10 @@ object SensorLogger {
     val reader = DataReader[TempSensor](ftopic, rqos)
 
     reader.reactions += {
-      case e: DataAvailable[TempSensor] => {
+      case e: DataAvailable[_] => {
         println("+--------------------------------------------------------")
         println("Read Sensors:")
-        e.reader.history foreach (t => {
+        reader.history foreach (t => {
           println("| " + TempSensor2String(t))
         })
       }

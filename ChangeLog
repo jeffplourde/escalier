@@ -1,3 +1,9 @@
+2011-11-21  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Updated configure to add jar dependency to idlib
+	* Fixed some deprecation warning on Math._ package
+	* Fixed some type erasure-related warnings
+
 2011-07-20  Angelo Corsaro  <angelo@icorsaro.net>
     * Extended DataReader API with support for take
     * Extended read/take API with sample/instance/view flags

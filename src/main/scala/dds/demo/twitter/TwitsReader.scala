@@ -20,8 +20,8 @@ object TwitsReader {
 		val reader = DataReader[Twit](t, qos)
 
     reader.reactions += {
-      case d: DataAvailable[Twit] => {
-        (d.reader read)foreach(t => println(t.name +" :> "+ t.msg))
+      case d: DataAvailable[_] => {
+        (reader read)foreach(t => println(t.name +" :> "+ t.msg))
       }
     }
 		Thread.currentThread.join()
