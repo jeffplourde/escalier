@@ -22,6 +22,7 @@ abstract class Subscriber(val dp: DomainParticipant, val qos: SubscriberQos) ext
   type Peer = DDS.Subscriber
 
 
+
 	def createDataReader[T](t: BaseTopic[T], qos: DataReaderQos)
 	(implicit m: Manifest[T]) : DataReader[T]
 

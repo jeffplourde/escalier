@@ -1,3 +1,20 @@
+2012-02-10  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Released version 0.3
+
+	* Added file-transfer  example 
+	
+	* Updated examples to use the new QoS DSL
+
+
+
+	* Updated QoS DSL to use case objects as opposed to case classes
+	when appropriate. In addition the various options for a QoS Policy
+	now are nested into the QoS companion.  For example, in place of
+	KeepLastHistory(), now you'll have to use History.KeepLast. Notice
+	that the latter is a singleton.
+
+
 2011-11-21  Angelo Corsaro  <angelo@icorsaro.net>
 
 	* Updated configure to add jar dependency to idlib

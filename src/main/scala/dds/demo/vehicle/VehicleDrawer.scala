@@ -4,7 +4,7 @@ package dds.demo.vehicle
 import dds.Topic
 import dds.sub.DataReader
 import dds.event.DataAvailable
-import dds.qos.{KeepLastHistory, DataReaderQos}
+import dds.qos.{History, DataReaderQos}
 import dds.pub.DataWriter
 import dds.demo.geometry.{Region2D, Vector2D}
 import org.opensplice.demo._

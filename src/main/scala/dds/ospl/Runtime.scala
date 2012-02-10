@@ -24,39 +24,39 @@ object Runtime {
       val ddsQos = qosH.value
 
       qos.durability match {
-        case v: VolatileDurability =>
+        case Durability.Volatile =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS
-        case v: TransientLocalDurability =>
+        case Durability.TransientLocal =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.TRANSIENT_LOCAL_DURABILITY_QOS
-        case v: TransientDurability =>
+        case Durability.Transient =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS
-        case v: PersistentDurability =>
+        case Durability.Persistent =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS
       }
 
       qos.history match {
-        case kl: dds.qos.KeepLastHistory => {
+        case kl: dds.qos.History.KeepLast => {
           ddsQos.history.kind = DDS.HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS
           ddsQos.history.depth = kl.depth
         }
-        case ka: dds.qos.KeepAllHistory => {
+        case dds.qos.History.KeepAll => {
           ddsQos.history.kind = DDS.HistoryQosPolicyKind.KEEP_ALL_HISTORY_QOS
         }
       }
 
       qos.ownership match {
-        case o: SharedOwnership =>
+        case Ownership.Shared =>
           ddsQos.ownership.kind = DDS.OwnershipQosPolicyKind.SHARED_OWNERSHIP_QOS
 
-        case o: ExclusiveOwnership =>
+        case o: Ownership.Exclusive =>
           ddsQos.ownership.kind = DDS.OwnershipQosPolicyKind.EXCLUSIVE_OWNERSHIP_QOS
       }
 
       qos.reliability match {
-        case r: BestEffort =>
+        case Reliability.BestEffort =>
           ddsQos.reliability.kind = DDS.ReliabilityQosPolicyKind.BEST_EFFORT_RELIABILITY_QOS
 
-        case r: Reliable =>
+        case Reliability.Reliable =>
           ddsQos.reliability.kind = DDS.ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS
       }
 
@@ -89,39 +89,39 @@ object Runtime {
       val ddsQos = qosH.value
 
       qos.durability match {
-        case v: VolatileDurability =>
+        case Durability.Volatile =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS
-        case v: TransientLocalDurability =>
+        case Durability.TransientLocal =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.TRANSIENT_LOCAL_DURABILITY_QOS
-        case v: TransientDurability =>
+        case Durability.Transient =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS
-        case v: PersistentDurability =>
+        case Durability.Persistent =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS
       }
 
       qos.history match {
-        case kl: dds.qos.KeepLastHistory => {
+        case kl: dds.qos.History.KeepLast => {
           ddsQos.history.kind = DDS.HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS
           ddsQos.history.depth = kl.depth
         }
-        case ka: dds.qos.KeepAllHistory => {
+        case dds.qos.History.KeepAll => {
           ddsQos.history.kind = DDS.HistoryQosPolicyKind.KEEP_ALL_HISTORY_QOS
         }
       }
 
       qos.ownership match {
-        case o: SharedOwnership =>
+        case Ownership.Shared =>
           ddsQos.ownership.kind = DDS.OwnershipQosPolicyKind.SHARED_OWNERSHIP_QOS
 
-        case o: ExclusiveOwnership =>
+        case o: Ownership.Exclusive =>
           ddsQos.ownership.kind = DDS.OwnershipQosPolicyKind.EXCLUSIVE_OWNERSHIP_QOS
       }
 
       qos.reliability match {
-        case r: BestEffort =>
+        case Reliability.BestEffort =>
           ddsQos.reliability.kind = DDS.ReliabilityQosPolicyKind.BEST_EFFORT_RELIABILITY_QOS
 
-        case r: Reliable =>
+        case Reliability.Reliable =>
           ddsQos.reliability.kind = DDS.ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS
       }
 
@@ -136,39 +136,40 @@ object Runtime {
       val ddsQos = qosH.value
 
       qos.durability match {
-        case v: VolatileDurability =>
+        case Durability.Volatile =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.VOLATILE_DURABILITY_QOS
-        case v: TransientLocalDurability =>
+        case Durability.TransientLocal =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.TRANSIENT_LOCAL_DURABILITY_QOS
-        case v: TransientDurability =>
+        case Durability.Transient =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.TRANSIENT_DURABILITY_QOS
-        case v: PersistentDurability =>
+        case Durability.Persistent =>
           ddsQos.durability.kind = DDS.DurabilityQosPolicyKind.PERSISTENT_DURABILITY_QOS
       }
 
       qos.history match {
-        case kl: dds.qos.KeepLastHistory => {
+        case kl: dds.qos.History.KeepLast => {
           ddsQos.history.kind = DDS.HistoryQosPolicyKind.KEEP_LAST_HISTORY_QOS
           ddsQos.history.depth = kl.depth
         }
-        case ka: dds.qos.KeepAllHistory => {
+        case dds.qos.History.KeepAll => {
           ddsQos.history.kind = DDS.HistoryQosPolicyKind.KEEP_ALL_HISTORY_QOS
         }
       }
 
       qos.ownership match {
-        case o: SharedOwnership =>
+        case Ownership.Shared =>
           ddsQos.ownership.kind = DDS.OwnershipQosPolicyKind.SHARED_OWNERSHIP_QOS
 
-        case o: ExclusiveOwnership =>
+        case o: Ownership.Exclusive =>
           ddsQos.ownership.kind = DDS.OwnershipQosPolicyKind.EXCLUSIVE_OWNERSHIP_QOS
+          ddsQos.ownership_strength.value = o.strength
       }
 
       qos.reliability match {
-        case r: BestEffort =>
+        case Reliability.BestEffort =>
           ddsQos.reliability.kind = DDS.ReliabilityQosPolicyKind.BEST_EFFORT_RELIABILITY_QOS
 
-        case r: Reliable =>
+        case Reliability.Reliable =>
           ddsQos.reliability.kind = DDS.ReliabilityQosPolicyKind.RELIABLE_RELIABILITY_QOS
       }
 

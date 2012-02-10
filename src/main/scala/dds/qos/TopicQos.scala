@@ -1,10 +1,10 @@
 package dds.qos
 
 object TopicQos {
-	def apply() = new TopicQos(VolatileDurability(),
-                                  KeepLastHistory(1),
-                                  SharedOwnership(),
-                                  BestEffort())
+	def apply() = new TopicQos(Durability.Volatile,
+                                  History.KeepLast(1),
+                                  Ownership.Shared,
+                                  Reliability.BestEffort)
 }
 
 class TopicQos(val durability: Durability,

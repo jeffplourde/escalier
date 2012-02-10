@@ -4,7 +4,7 @@ import dds._
 import dds.sub._
 import dds.pub._
 import dds.event._
-import qos.{KeepLastHistory, DataReaderQos}
+import qos.{History, DataReaderQos}
 import org.opensplice.demo.ShapeType
 
 object AverageShape {
@@ -25,7 +25,7 @@ object AverageShape {
     val inTopic = Topic[ShapeType](dp, args(0))
     val outTopic = Topic[ShapeType](dp, args(1))
 
-    val qos = DataReaderQos() <= KeepLastHistory(1)
+    val qos = DataReaderQos() <= History.KeepLast(1)
     val reader = DataReader[ShapeType](sub, inTopic, qos)
 
     val writer = DataWriter[ShapeType](pub, outTopic)

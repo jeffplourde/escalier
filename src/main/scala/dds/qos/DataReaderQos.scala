@@ -2,10 +2,10 @@ package dds.qos
 
 
 object DataReaderQos {
-	def apply() = new DataReaderQos(VolatileDurability(),
-                                  KeepLastHistory(1),
-                                  SharedOwnership(),
-                                  BestEffort())
+	def apply() = new DataReaderQos(Durability.Volatile,
+                                  History.KeepLast(1),
+                                  Ownership.Shared,
+                                  Reliability.BestEffort)
 }
 
 class DataReaderQos(val durability: Durability,

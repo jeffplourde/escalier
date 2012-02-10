@@ -4,7 +4,7 @@ import dds.sub._
 import dds.event._
 import org.opensplice.demo.TempSensor
 import dds._
-import qos.{KeepLastHistory, DataReaderQos}
+import qos.{History, DataReaderQos}
 
 trait Builder[Container[X], T] {
   def += (el: T): Unit
@@ -25,7 +25,7 @@ object MovingAverageFilter {
     val topic = Topic[TempSensor]("TTempSensor")
     val ftopic = ContentFilteredTopic[TempSensor]("CFTempSensor",topic, args(1))
 
-    val rqos = DataReaderQos() <= KeepLastHistory(args(0).toInt)
+    val rqos = DataReaderQos() <= History.KeepLast(args(0).toInt)
     val reader = DataReader[TempSensor](ftopic, rqos)
 
 

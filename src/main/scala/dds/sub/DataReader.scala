@@ -30,6 +30,7 @@ object DataReader {
     defaultSubscriber.createDataReader(t, DataReaderQos())
   }
 }
+
 abstract class DataReader[T](val sub: Subscriber,
                              val topic: BaseTopic[T],
                              val qos: DataReaderQos)
@@ -40,15 +41,22 @@ abstract class DataReader[T](val sub: Subscriber,
 
   val reactions = new Reactions.Impl
 
-  def read(): Array[T]
   def read(s: SampleSelector): Array[T]
+
+  def read: Array[T] =  this.read(SampleSelector.NewData)
+
+  def read(n: Int, s: SampleSelector = SampleSelector.NewData): Array[T]
   def read(instance: T): Array[T]
-  def read[SampleSeqHolder](data: SampleSeqHolder): Unit
+  def read[SampleSeqHolder](data: SampleSeqHolder)
 
-  def take(): Array[T]
   def take(s: SampleSelector): Array[T]
+  def take: Array[T] = this.take(SampleSelector.NewData)
+  def take(n: Int, s: SampleSelector = SampleSelector.NewData): Array[T]
 
-  def history(): Array[T]
+  def history(): Array[T] = {
+    println(">> history")
+    this.read(SampleSelector.AllData)
+  }
   def history(instance: T): Array[T]
 
 }

@@ -26,14 +26,15 @@ abstract class Reliability() extends Policy {
 }
 
 
-case class Reliable() extends Reliability {
-	override def toString = name + "[reliable]"
-}
+object Reliability {
+  case object Reliable extends Reliability {
+    override def toString = name + "[reliable]"
+  }
 
-case class BestEffort() extends Reliability {
-	override def toString = name + "[best-effort]"
+  case object BestEffort extends Reliability {
+    override def toString = name + "[best-effort]"
+  }
 }
-
 /**
  * The <code>History</code> QoS Policy allows to control the number
  * of samples per instance that the infrastructure will store in the
@@ -43,19 +44,21 @@ case class BestEffort() extends Reliability {
  */
 abstract class History() extends Policy {
 	def name = "History"
-	def id   = 13	
+	def id   = 13
+
 }
 
-	
-case class KeepLastHistory(depth: Int) extends History {
-	require(depth > 0)		
-	override def toString = name + "[" + depth + "]" 
-}
+object History {
 
-case class KeepAllHistory() extends History {
-	override def toString = name 
-}
+  case class KeepLast(depth: Int) extends History {
+    require(depth > 0)
+    override def toString = name + "[" + depth + "]"
+  }
 
+  case object KeepAll extends History {
+    override def toString = name
+  }
+}
 /**
  * The <code>Owenership</code> QoS Policy controls whether 
  * more than one writer can concurrently change the same instance or not.
@@ -69,16 +72,16 @@ abstract class Ownership() extends Policy {
 	
 }
 
-case class SharedOwnership() extends Ownership {
-	
-	override def toString = name + "[shared]"
-}
+object Ownership {
+  case object Shared extends Ownership {
+    override def toString = name + "[shared]"
+  }
 
-case class ExclusiveOwnership(strength: Int) extends Ownership {
-	require (strength > 0)
-	override def toString = name + "[exclusive]"
+  case class Exclusive(strength: Int = 0) extends Ownership {
+    require (strength > 0)
+    override def toString = name + "[exclusive]"
+  }
 }
-
 /**
  * The <code>Durability</code> QoS Policy controls the degrees of time
  * decoupling between the producer and consumers of data.
@@ -90,22 +93,25 @@ abstract class Durability() extends Policy {
 	def name = "Durability"
 	def id = 22
 }
-case class VolatileDurability() extends Durability {
-	override def toString = name + "[Volatile]"
-}
+object Durability {
 
-case class TransientLocalDurability() extends Durability {
-	override def toString = name + "[TransientLocal]"
-}
+  case object Volatile extends Durability {
+    override def toString = name + "[Volatile]"
+  }
 
-case class TransientDurability() extends Durability {
-	override def toString = name + "[Transient]"
-}
+  case object TransientLocal extends Durability {
+    override def toString = name + "[TransientLocal]"
+  }
 
-case class PersistentDurability() extends Durability {
-	override def toString = name + "[Persistent]"
-}
+  case object Transient extends Durability {
+    override def toString = name + "[Transient]"
+  }
 
+  case object Persistent extends Durability {
+    override def toString = name + "[Persistent]"
+  }
+
+}
 case class TopicData() extends Policy {
 	def name = "TopicData"
 	def id = 18
@@ -138,13 +144,14 @@ abstract class DestinationOrder() extends Policy {
 	def name = "DestinationOrder"
 	def id = 12
 }
-case class SourceTimeStamp() extends DestinationOrder {
-	override def toString = name + "[Source]"
+object DestinationOrder {
+  case object SourceTimeStamp extends DestinationOrder {
+    override def toString = name + "[Source]"
+  }
+  case object DestinationTimeStamp extends DestinationOrder {
+    override def toString = name + "[Destination]"
+  }
 }
-case class DestinationTimeStamp() extends DestinationOrder {
-	override def toString = name + "[Destination]"
-}
-
 case class ResourceLimits() extends Policy {
 	def name = "ResourceLimits"
 	def id = 14

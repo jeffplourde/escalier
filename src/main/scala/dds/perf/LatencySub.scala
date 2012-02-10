@@ -15,11 +15,11 @@ import reflect.ValDef
 object LatencySub {
   def main(args: Array[String]) {
     val wtopic = Topic[SeqPayload]("RSeqPayload")
-    val dwqos = DataWriterQos() <= Reliable() <= TransientDurability()
+    val dwqos = DataWriterQos() <= Reliability.Reliable <= Durability.Transient
     val writer = DataWriter[SeqPayload](wtopic, dwqos)
 
     val rtopic = Topic[SeqPayload]("WSeqPayload")
-    val drqos = DataReaderQos() <= Reliable() <= TransientDurability()
+    val drqos = DataReaderQos() <= Reliability.Reliable <= Durability.Transient
     val reader = DataReader[SeqPayload](rtopic, drqos)
 
     reader.reactions += {

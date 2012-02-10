@@ -3,4 +3,3 @@
 Escalier is currently a thin Scala wrapper around the OpenSplice DDS
 Java API. This is mostly an experiment to understand how we might
 design a Scala API for DDS.
-

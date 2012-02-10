@@ -5,8 +5,8 @@ import dds.sub._
 import dds.pub._
 import dds.event._
 import qos.DataReaderQos._
-import qos.KeepLastHistory._
-import qos.{Liveliness, KeepLastHistory, DataReaderQos}
+import qos.History
+import qos.{Liveliness, History, DataReaderQos}
 import org.opensplice.demo.ShapeType
 
 object ShapesFilter {
@@ -31,7 +31,7 @@ object ShapesFilter {
     val outTopic = Topic[ShapeType](dp, args(2))
 
 
-    val qos = DataReaderQos() <= KeepLastHistory(1)
+    val qos = DataReaderQos() <= History.KeepLast(1)
     val reader = DataReader[ShapeType](sub, filter, qos)
     val writer = DataWriter[ShapeType](pub, outTopic)
 

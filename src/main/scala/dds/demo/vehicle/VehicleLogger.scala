@@ -4,7 +4,7 @@ import dds.Topic
 import dds.sub.DataReader
 import dds.event.DataAvailable
 import org.opensplice.demo.VehicleStatus
-import dds.qos.{KeepLastHistory, DataReaderQos}
+import dds.qos.{History, DataReaderQos}
 
 object VehicleLogger {
   def main(args: Array[String]) {
@@ -14,7 +14,7 @@ object VehicleLogger {
       sys.exit(1)
     }
     val vehicleStatusTopic = Topic[VehicleStatus]("TVehicleStatus")
-    val qos = DataReaderQos() <= KeepLastHistory(args(0).toInt)
+    val qos = DataReaderQos() <= History.KeepLast(args(0).toInt)
     val vsDR= DataReader[VehicleStatus](vehicleStatusTopic, qos)
 
     println("+----------------------------------------------------+")

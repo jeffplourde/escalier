@@ -32,7 +32,7 @@ class DomainParticipantImpl(domain: Int) extends DomainParticipant(domain) {
       }
     }
 
-	val ddsPeer : DDS.DomainParticipant = createDdsDP
+  val ddsPeer : DDS.DomainParticipant = createDdsDP
 	
 	private def createDdsDP() : DDS.DomainParticipant = {
 		val dpf = DDS.DomainParticipantFactory.get_instance()

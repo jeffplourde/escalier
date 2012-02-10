@@ -1,0 +1,9 @@
+Escalier v0.3
+=============================================================================
+
+* Updated the QoS DSL to nest QoS variations into an object. Made object
+  all constant QoS policies -- this will save memory.
+  As a result, in place of using something like "KeepAllHistory()", now
+  you'll have to use History.KeepAll.
+
+* Added a new example that sketches howto do file transfer with DDS

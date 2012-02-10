@@ -20,7 +20,7 @@ object SensorLogger {
     val topic = Topic[TempSensor]("TTempSensor")
     val ftopic = ContentFilteredTopic[TempSensor]("CFTempSensor",topic, args(1))
 
-    val rqos = DataReaderQos() <= KeepLastHistory(args(0).toInt)
+    val rqos = DataReaderQos() <= History.KeepLast(args(0).toInt)
     val reader = DataReader[TempSensor](ftopic, rqos)
 
     reader.reactions += {

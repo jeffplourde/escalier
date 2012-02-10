@@ -15,11 +15,11 @@ object LatencyPub {
       println("USAGE:\n\tLatencyPub <size> <samples>")
     }
     val wtopic = Topic[SeqPayload]("WSeqPayload")
-    val dwqos = DataWriterQos() <= Reliable() <= TransientDurability()
+    val dwqos = DataWriterQos() <= Reliability.Reliable <= Durability.Transient
     val writer = DataWriter[SeqPayload](wtopic, dwqos)
 
     val rtopic = Topic[SeqPayload]("RSeqPayload")
-    val drqos = DataReaderQos() <= Reliable() <= TransientDurability()
+    val drqos = DataReaderQos() <= Reliability.Reliable <= Durability.Transient
     val reader = DataReader[SeqPayload](rtopic, drqos)
 
     val length = args(0).toInt

@@ -2,10 +2,10 @@ package dds.qos
 
 
 object DataWriterQos {
-	def apply() = new DataWriterQos(VolatileDurability(),
-                                  KeepLastHistory(1),
-                                  SharedOwnership(),
-                                  BestEffort())
+  def apply() = new DataWriterQos(Durability.Volatile,
+    History.KeepLast(1),
+    Ownership.Shared,
+    Reliability.BestEffort)
 }
 
 class DataWriterQos(val durability: Durability,

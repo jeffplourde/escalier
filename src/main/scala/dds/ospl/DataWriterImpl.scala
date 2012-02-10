@@ -9,11 +9,11 @@ class DataWriterImpl[T](p: PublisherImpl,
                         qos: DataWriterQos)
                        (implicit m: Manifest[T]) extends DataWriter[T](p, t, qos) {
 
-	private var copyCache: Long = getCopyCache()
+	private val copyCache: Long = getCopyCache
 	val ddsPeer =
 		p.ddsPeer.create_datawriter(t.ddsPeer, dataWriterQos2DDSQos(qos, pub), new EventListener[T](this), DDS.STATUS_MASK_ANY_V1_2.value)
     
-	def getCopyCache(): Long = {
+	def getCopyCache: Long = {
 		val tsClass = t.typeSupport.getClass 
 		val method = tsClass.getDeclaredMethod("get_copyCache")
 		val res = method.invoke(t.typeSupport)
@@ -23,11 +23,9 @@ class DataWriterImpl[T](p: PublisherImpl,
 		}
 	}
 
-	def write(sample: T) : Unit = { 
+	def write(sample: T) = {
 		org.opensplice.dds.dcps.FooDataWriterImpl.write(ddsPeer, copyCache, sample, DDS.HANDLE_NIL.value)
 	}
-	
-
 
   // Listener Implementation
   private class EventListener[T](val writer: dds.pub.DataWriter[T]) extends DDS.DataWriterListener {
