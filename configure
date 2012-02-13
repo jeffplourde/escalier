@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir lib
+mkdir -p lib idlib/lib
 cp $OSPL_HOME/jar/dcpssaj.jar ./lib
 cp $OSPL_HOME/jar/dcpssaj.jar ./idlib/lib
 pushd $PWD &>/dev/null
