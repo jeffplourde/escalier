@@ -52,17 +52,14 @@ class DataReaderImpl[T](p: SubscriberImpl,
     import dds.sub.SampleSelector._
     s match {
       case NewData =>
-        println(">>> read NewData")
         readi(DDS.NOT_READ_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
           DDS.ANY_INSTANCE_STATE.value, n)
       case AllData =>
-        println(">>> read AllData")
         readi(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
           DDS.ANY_INSTANCE_STATE.value, n)
       case AllSamples =>
-        println(">>> read AllSamples")
         readi(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
           DDS.ANY_INSTANCE_STATE.value, n)
@@ -75,17 +72,14 @@ class DataReaderImpl[T](p: SubscriberImpl,
     import dds.sub.SampleSelector._
     s match {
       case NewData =>
-        println(">>> take NewData")
         takei(DDS.NOT_READ_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
           DDS.ANY_INSTANCE_STATE.value, n)
       case AllData =>
-        println(">>> take AllData")
         takei(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
           DDS.ANY_INSTANCE_STATE.value, n)
       case AllSamples =>
-        println(">>> take AllSamples")
         takei(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
           DDS.ANY_INSTANCE_STATE.value, n)

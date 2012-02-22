@@ -4,8 +4,9 @@ import scala.swing._
 import scala.util._
 import scala.swing.Swing._
 import scala.swing.event._
-import java.awt.{BorderLayout}
+import java.awt.{BorderLayout, GridBagConstraints}
 import javax.swing.{JPanel, JButton}
+import IShapeConstants._
 
 
 object IShapeConstants {
@@ -19,7 +20,7 @@ object IShapeConstants {
 	val SHAPE_PANEL_WIDTH  = 500
 	val SHAPE_PANEL_HEIGHT = 360
 }
-import IShapeConstants._
+
 
 
 
@@ -84,11 +85,18 @@ object IShapeApplication extends SimpleSwingApplication {
 		min = MINIMUM_SHAPE_SIZE
 		max = MAXIMUM_SHAPE_SIZE
 		value = DEFAULT_SHAPE_SIZE
+		paintTicks = true
+		minorTickSpacing = 10
+		preferredSize = (100, 30)
 	}
 	object pubSpeedSlider extends Slider {
 		min = MINIMUM_SHAPE_SPEED
 		max = MAXIMUM_SHAPE_SPEED
 		value = DEFAULT_SHAPE_SPEED
+		paintTicks = true
+		minorTickSpacing = 1
+		snapToTicks = true
+		preferredSize = (100, 30)
 	}
 	val pubButton   = new Button("publish")
 	
@@ -108,28 +116,69 @@ object IShapeApplication extends SimpleSwingApplication {
 			contents += new BoxPanel(Orientation.Vertical) {
 				border = Swing.EmptyBorder(5, 5, 5, 5)
 				
-				contents += new BoxPanel(Orientation.Vertical) {
+				contents += new GridBagPanel {
 					border = CompoundBorder(TitledBorder(EtchedBorder, "Publisher"), EmptyBorder(5,5,5,10))
-					contents += new FlowPanel(new Label("Shape:"), pubShapeBox)
-					contents += new FlowPanel(new Label("Color:"), pubColorBox)
-					contents += new FlowPanel(new Label("Size:"), pubSizeSlider)
-					contents += new FlowPanel(new Label("Speed:"), pubSpeedSlider)
-					contents += pubQosButton
-					contents += pubButton
+
+					val c = new Constraints
+					c.fill = GridBagPanel.Fill.Horizontal
+					c.insets = new Insets(5, 5, 5, 5)
+					c.anchor = GridBagPanel.Anchor.LineEnd
+					
+					c.grid = (0, 0)
+					layout(new Label("Shape:")) = c
+					c.grid = (1, 0)
+					layout(pubShapeBox) = c
+					
+					c.grid = (0, 1)
+					layout(new Label("Color:")) = c
+					c.grid = (1, 1)
+					layout(pubColorBox) = c
+					
+					c.grid = (0, 2)
+					layout(new Label("Size:")) = c
+					c.grid = (1, 2)
+					layout(pubSizeSlider) = c
+					
+					c.grid = (0, 3)
+					layout(new Label("Speed:")) = c
+					c.grid = (1, 3)
+					layout(pubSpeedSlider) = c
+					
+					c.gridwidth = 2
+					c.grid = (0, 4)
+					layout(pubQosButton) = c
+					
+					c.grid = (0, 5)
+					layout(pubButton) = c
 				}
 				
 				contents += new Separator
-				contents += new BoxPanel(Orientation.Vertical) {
+				contents += new GridBagPanel {
 					border = CompoundBorder(TitledBorder(EtchedBorder, "Subscriber"), EmptyBorder(5,5,5,10))
-					contents += new FlowPanel(new Label("Shape:"), subShapeBox)
-					contents += subQosButton
-					contents += subFilterButton
-					contents += subButton
+
+					val c = new Constraints
+					c.fill = GridBagPanel.Fill.Horizontal
+					c.insets = new Insets(5, 5, 5, 5)
+					c.anchor = GridBagPanel.Anchor.LineEnd
+					
+					c.grid = (0, 0)
+					layout(new Label("Shape:")) = c
+					c.grid = (1, 0)
+					layout(subShapeBox) = c
+					
+					c.gridwidth = 2
+					c.grid = (0, 1)
+					layout(subQosButton) = c
+					
+					c.grid = (0, 2)
+					layout(subFilterButton) = c
+					
+					c.grid = (0, 3)
+					layout(subButton) = c
 				}
 			}
 			
 			contents += new Separator
-			
 			contents += ShapesPanel
 		}
 	}
@@ -139,27 +188,40 @@ object IShapeApplication extends SimpleSwingApplication {
 	reactions += {
 		case ButtonClicked(`pubQosButton`) =>
 			WriterQosDialog.open()
+
 		case ButtonClicked(`subQosButton`) =>
+		    ReaderQosDialog.open()
+
 		case ButtonClicked(`subFilterButton`) =>
+		    new Dialog() {
+		        private val cancel = new Button("Cancel")
+		        contents = new BoxPanel(Orientation.Vertical) {
+		            contents += new Label("Sorry, not yet implemented !")
+		            contents += cancel
+		        }
+		        listenTo(cancel)
+		        reactions += { case ButtonClicked(`cancel`) => close}
+		    } open
+
 		case ButtonClicked(`pubButton`) =>
 			val shape = createBouncingShapeComponent(pubShapeBox.selection.item,
 												     pubSizeSlider.value,
 												     pubColorBox.selection.item.toUpperCase,
 													 pubSpeedSlider.value)
 			ShapesManager += shape
+
 		case ButtonClicked(`subButton`) =>
 			val shapeDataReader = createShapesDataReader(subShapeBox.selection.item)
 			ShapesManager += shapeDataReader
-		
-		
 	}
 	
-
 	
 	override def startup(args: Array[String]): Unit = {
 		super.startup(args)
 		ShapesManager start()
-		println("IShapeApplication started")
+		if (args.length > 0)
+			sys.props +=(("dds.domainId", args(0)))
+		println("IShapeApplication starting on domain " + ShapesDDSTopics.domainId)
 	}
 	
 }

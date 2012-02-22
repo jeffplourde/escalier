@@ -54,7 +54,6 @@ abstract class DataReader[T](val sub: Subscriber,
   def take(n: Int, s: SampleSelector = SampleSelector.NewData): Array[T]
 
   def history(): Array[T] = {
-    println(">> history")
     this.read(SampleSelector.AllData)
   }
   def history(instance: T): Array[T]

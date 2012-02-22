@@ -1,3 +1,23 @@
+Escalier v0.4
+=============================================================================
+
+* Added missing QoS Policies. 
+
+* Added apply() operation to *Qos objects with a list of appropriate Policies.
+  Example of usage:
+     val dwQos = DataWriterQos(Reliability.Reliable, Ownership.Exclusive(3))
+
+* Added + and ++ operators to *Qos classes.
+  Example of usage:
+     var dwQos = DataWriterQos + Reliability.Reliable
+     dwQos += Ownership.Exclusive(3)
+     dwQos ++= (Durability.Transient, TransportPriority(5))
+  Note that such operators return a new *Qos object which is a copy of the original one,
+  with the new Policies overriding the old ones.
+     
+* Updated iShapes demo adding QoS Policies management.
+
+
 Escalier v0.3
 =============================================================================
 

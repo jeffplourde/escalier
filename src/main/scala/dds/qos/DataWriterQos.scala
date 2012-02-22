@@ -2,19 +2,71 @@ package dds.qos
 
 
 object DataWriterQos {
-  def apply() = new DataWriterQos(Durability.Volatile,
-    History.KeepLast(1),
-    Ownership.Shared,
-    Reliability.BestEffort)
+
+  def apply(policies: DataWriterPolicy*): DataWriterQos = {
+      var ddl = Deadline.DefaultValue
+      var dso = DestinationOrder.DefaultValue
+      var dur = Durability.DefaultValue
+      var dus = DurabilityService.DefaultValue
+      var his = History.DefaultValue
+      var lat = LatencyBudget.DefaultValue
+      var lif = Lifespan.DefaultValue
+      var liv = Liveliness.DefaultValue
+      var own = Ownership.DefaultValue
+      var rel = Reliability.DefaultValue
+      var res = ResourceLimits.DefaultValue
+      var trp = TransportPriority.DefaultValue   
+	  policies foreach (_ match {
+        case p: Deadline          => ddl = p
+		case p: DestinationOrder  => dso = p
+		case p: Durability        => dur = p
+		case p: DurabilityService => dus = p
+		case p: History           => his = p
+		case p: LatencyBudget     => lat = p
+		case p: Lifespan          => lif = p
+		case p: Liveliness        => liv = p
+		case p: Ownership         => own = p
+		case p: Reliability       => rel = p
+		case p: ResourceLimits    => res = p
+		case p: TransportPriority => trp = p
+      })
+      new DataWriterQos(ddl, dso, dur, dus, his, lat, lif, liv, own, rel, res, trp)
+  }
 }
 
-class DataWriterQos(val durability: Durability,
+class DataWriterQos(val deadline: Deadline,
+					val destinationOrder: DestinationOrder,
+					val durability: Durability,
+					val durabilityService: DurabilityService,
                     val history: History,
+                    val latencyBudget: LatencyBudget,
+                    val lifespan: Lifespan,
+                    val liveliness: Liveliness,
                     val ownership: Ownership,
-                    val reliability: Reliability) {
+                    val reliability: Reliability,
+                    val resourceLimits: ResourceLimits,
+                    val transportPriority: TransportPriority) 
+{
+    def all: Seq[DataWriterPolicy] = 
+        Seq(deadline, 
+            destinationOrder, 
+            durability, 
+            durabilityService, 
+            history, 
+            latencyBudget, 
+            lifespan, 
+            liveliness,
+            ownership,
+            reliability,
+            resourceLimits,
+            transportPriority)
+                
+    def <= (p: DataWriterPolicy) = DataWriterQos(all :+ p: _*)
+  
+    def + (p: DataWriterPolicy) = DataWriterQos(all :+ p: _*)
+  
+    def ++ (p: DataWriterPolicy*) = DataWriterQos(all ++ p: _*)
 
-  def <= (d: Durability) = new DataWriterQos(d, history, ownership, reliability)
-  def <= (h: History) = new DataWriterQos(durability, h, ownership, reliability)
-  def <= (o: Ownership) = new DataWriterQos(durability, history, o, reliability)
-  def <= (r: Reliability) = new DataWriterQos(durability, history, ownership, r)
+    override def toString() = "DataWriterQos{ " + durability + " , " + history + 
+                              " , " + ownership + " , " + reliability + " }"
 }

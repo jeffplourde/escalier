@@ -40,7 +40,10 @@ class DomainParticipantImpl(domain: Int) extends DomainParticipant(domain) {
 		dpf.get_default_participant_qos(holder)
     if (domainIsInt) {
       println("Connecting on Domain '"+domain+"'")
-      createParticipantMethod.invoke(dpf, domain.asInstanceOf[java.lang.Integer], holder.value, null, DDS.STATUS_MASK_ANY_V1_2.value.asInstanceOf[java.lang.Integer]).asInstanceOf[DDS.DomainParticipant]
+      val result = createParticipantMethod.invoke(dpf, domain.asInstanceOf[java.lang.Integer], holder.value, null, DDS.STATUS_MASK_ANY_V1_2.value.asInstanceOf[java.lang.Integer]).asInstanceOf[DDS.DomainParticipant]
+      if (result == null)
+        throw new RuntimeException("OpenSpliceDDS unable to create DomainParticipant (check ospl-error.log)")
+      result
     } else {
       println("WARNING: you're using OpenSpliceDDS v5.x. Domain is ignored and 'null' is used instead.")
       createParticipantMethod.invoke(dpf, null, holder.value, null, DDS.STATUS_MASK_ANY_V1_2.value.asInstanceOf[java.lang.Integer]).asInstanceOf[DDS.DomainParticipant]

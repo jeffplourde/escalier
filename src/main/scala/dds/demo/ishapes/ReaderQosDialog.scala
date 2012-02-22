@@ -6,16 +6,16 @@ import BorderPanel.Position._
 import Swing._
 import dds.qos._
 
-object WriterQosDialog extends Dialog {
+object ReaderQosDialog extends Dialog {
 	
-	title = "Writer QoS"
+	title = "Reader QoS"
 
-	var qos: DataWriterQos = DataWriterQos()
+	var qos: DataReaderQos = DataReaderQos()
 		
 	private def updateQos = {
 		// set qos according to values set in Dialog
 		println("update QoS")
-	  
+		
 		qos ++= ( 
 				// Add Reliability
 				{reliability.selected.get match {
@@ -27,17 +27,18 @@ object WriterQosDialog extends Dialog {
 					case `shared`      => Ownership.Shared
 					case `exclusive`   => Ownership.Exclusive(strength.getValue().asInstanceOf[Int])
 				}},
+				// Add History
+				{history.selected.get match {
+					case `keepAll`  => History.KeepAll
+					case `keepLast` => History.KeepLast(depth.getValue().asInstanceOf[Int])
+				}},
 				// Add Durability
 				{durability.selection.item match {
-				  case `Volatile`   => Durability.Volatile
-				  case `Transient`  => Durability.Transient
-				  case `Persistent` => Durability.Persistent
-				}},
-				// Add TransportPriority
-				TransportPriority(priority.getValue().asInstanceOf[Int])
+					case `Volatile`   => Durability.Volatile
+					case `Transient`  => Durability.Transient
+					case `Persistent` => Durability.Persistent
+				}}
 		)
-				
-		println("Updated QoS: " + qos)
 	}
 	
 	private def initDialog = {
@@ -45,8 +46,9 @@ object WriterQosDialog extends Dialog {
 		reliability.select(besteffort)
 		ownership.select(shared)
 		strength.setValue(50)
+		history.select(keepLast)
+		depth.setValue(1)
 		durability.selection.item = Volatile
-		priority.setValue(50)
 	}
 	
 	override def open = {
@@ -63,21 +65,25 @@ object WriterQosDialog extends Dialog {
 	private val ownership = new ButtonGroup
 	private val shared = new RadioButton("Shared")
 	private val exclusive = new RadioButton("Exclusive")
-	private val strength = new javax.swing.JSpinner { setPreferredSize((60,20)) }
+	private val strength = new javax.swing.JSpinner
 	private val ownershipButtons = List(shared, exclusive)
 	ownership.buttons ++= ownershipButtons
+	
+	private val history = new ButtonGroup
+	private val keepAll = new RadioButton("Keep All")
+	private val keepLast = new RadioButton("Keep Last")
+	private val depth = new javax.swing.JSpinner
+	private val historyButtons = List(keepAll, keepLast)
+	history.buttons ++= historyButtons
 	
 	case class DurabilityKind(name: String)
 	object Volatile   extends DurabilityKind("Volatile")
 	object Transient  extends DurabilityKind("Transient")
 	object Persistent extends DurabilityKind("Persistent")
 	private val durability = new ComboBox(List(Volatile, Transient, Persistent)) { 
-		renderer = ListView.Renderer(_.name)
-		preferredSize = (100,20)
+		renderer = ListView.Renderer(_.name) 
 	}
 	
-	private val priority = new javax.swing.JSpinner { setPreferredSize((60,20)) }
-
 	private val ok = new Button("OK")
 	private val cancel = new Button("Cancel")
 	
@@ -98,49 +104,29 @@ object WriterQosDialog extends Dialog {
 			contents += new BoxPanel(Orientation.Horizontal) {
 				contents ++= ownershipButtons
 			}
-			contents += new GridBagPanel {
-				val c = new Constraints
-				c.fill = GridBagPanel.Fill.Horizontal
-				c.insets = new Insets(0, 5, 0, 5)
-				c.anchor = GridBagPanel.Anchor.LineEnd
-				
-				c.grid = (0, 0)
-				layout(new Label("Strength:")) = c
-				c.grid = (1, 0)
-				layout(Component.wrap(strength)) = c
+			contents += new BoxPanel(Orientation.Horizontal) {
+				contents += new Label("Strength:")
+				contents += Component.wrap(strength)
 			}
+		}
+
+		contents += new BoxPanel(Orientation.Vertical) {
+			border = CompoundBorder(TitledBorder(EtchedBorder, "History QoS"), EmptyBorder(5,5,5,10))
+			
+			contents += new BoxPanel(Orientation.Horizontal) {
+				contents ++= historyButtons
+			}
+			contents += new BoxPanel(Orientation.Horizontal) {
+				contents += new Label("Depth:")
+				contents += Component.wrap(depth)
+			}
+			contents += Component.wrap(depth)
 		}
 
 		contents += new BoxPanel(Orientation.Vertical) {
 			border = CompoundBorder(TitledBorder(EtchedBorder, "Durability QoS"), EmptyBorder(5,5,5,10))
 			
-			contents += new GridBagPanel {
-				val c = new Constraints
-				c.fill = GridBagPanel.Fill.Horizontal
-				c.insets = new Insets(0, 5, 0, 5)
-				c.anchor = GridBagPanel.Anchor.LineEnd
-				
-				c.grid = (0, 0)
-				layout(new Label("Durability:")) = c
-				c.grid = (1, 0)
-				layout(durability) = c
-			}
-		}
-
-		contents += new BoxPanel(Orientation.Vertical) {
-			border = CompoundBorder(TitledBorder(EtchedBorder, "Transport Priority QoS"), EmptyBorder(5,5,5,10))
-			
-			contents += new GridBagPanel {
-				val c = new Constraints
-				c.fill = GridBagPanel.Fill.Horizontal
-				c.insets = new Insets(0, 5, 0, 5)
-				c.anchor = GridBagPanel.Anchor.LineEnd
-				
-				c.grid = (0, 0)
-				layout(new Label("Priority:")) = c
-				c.grid = (1, 0)
-				layout(Component.wrap(priority)) = c
-			}
+			contents += durability
 		}
 
 		contents += new BoxPanel(Orientation.Horizontal) {

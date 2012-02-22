@@ -1,3 +1,14 @@
+2012-02-22  Julien Enoch
+
+* Added missing QoS Policies. 
+
+* Added apply() operation to *Qos objects with a list of appropriate Policies.
+
+* Added + and ++ operators to *Qos classes.
+
+* Updated iShapes demo adding QoS Policies management.
+
+
 2012-02-10  Angelo Corsaro  <angelo@icorsaro.net>
 
 	* Released version 0.3

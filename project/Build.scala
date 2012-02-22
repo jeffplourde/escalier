@@ -3,7 +3,7 @@ import Keys._
 
 object BuildSettings {
   val buildOrganization = "net.icorsaro"
-  val buildVersion = "0.3"
+  val buildVersion = "0.4"
   val buildScalaVersion = "2.9.1"
 
   val buildSettings = Defaults.defaultSettings  ++ Seq (
@@ -28,13 +28,13 @@ object EscalierBuild extends Build
      "escalier", 
      file("."), 
      settings = buildSettings 
-   ) dependsOn(idlib)
+   ) dependsOn(idlib) aggregate(idlib)
 
    lazy val idlib = 
      Project (
        "idlib", 
        file("idlib")) settings (
 	 name := "escalier-idlib",
-	 version := "0.3"
+	 version := "0.4"
        )
 }

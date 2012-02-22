@@ -11,7 +11,7 @@ abstract class ShapesDataReader {
 	implicit def ShapeTypeToShapeComponent(data: ShapeType): ShapeComponent
 	
 	def read: Array[ShapeComponent] = {
-		for (shape <- (datareader read)) yield ShapeTypeToShapeComponent(shape)
+		for (shape <- (datareader history)) yield ShapeTypeToShapeComponent(shape)
 	}
 }
 
