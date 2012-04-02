@@ -5,20 +5,18 @@ object ContentFilteredTopic {
 
   def apply[T](name: String,
                topic: Topic[T],
-               filter: String,
-               params: List[String]) (implicit m: Manifest[T]) =
-    topic.dp.createContentFilteredTopic[T](name, topic, filter, params)(m)
+               query: Query) (implicit m: Manifest[T]) =
+    topic.dp.createContentFilteredTopic[T](name, topic, query)(m)
 
   def apply[T](name: String, topic: Topic[T],
                filter: String) (implicit m: Manifest[T]) =
-    topic.dp.createContentFilteredTopic[T](name, topic, filter, List[String]())(m)
+    topic.dp.createContentFilteredTopic[T](name, topic, Query(filter, List()))(m)
 
 }
 
 abstract class ContentFilteredTopic[T](name: String,
                                        val topic: Topic[T],
-                                       val filter: String,
-                                       val params: List[String]) (implicit m: Manifest[T])
+                                       val query: Query) (implicit m: Manifest[T])
   extends BaseTopic[T](topic.dp, name)(m) {
 
   override type Peer = DDS.ContentFilteredTopic

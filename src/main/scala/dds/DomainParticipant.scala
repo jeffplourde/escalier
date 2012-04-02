@@ -21,8 +21,7 @@ abstract class DomainParticipant(val domain: Int) extends Entity {
 
   def createContentFilteredTopic[T](name: String,
                                     topic: Topic[T],
-                                    filter: String,
-                                    params: List[String]) (implicit m: Manifest[T]): ContentFilteredTopic[T]
+                                    query: Query) (implicit m: Manifest[T]): ContentFilteredTopic[T]
 	
 	// def createPublisher() : Publisher
   // def createSubscriber() : Subscriber

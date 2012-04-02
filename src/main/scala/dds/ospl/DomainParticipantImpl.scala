@@ -1,6 +1,6 @@
 package dds.ospl
 
-import dds.{Topic, DomainParticipant, ContentFilteredTopic}
+import dds.{Topic, DomainParticipant, ContentFilteredTopic, Query}
 import dds.pub.Publisher
 import dds.sub.Subscriber
 import dds.qos.{TopicQos, PublisherQos, SubscriberQos}
@@ -75,8 +75,8 @@ class DomainParticipantImpl(domain: Int) extends DomainParticipant(domain) {
 		new SubscriberImpl(this, qos)
 	}
 
-  def createContentFilteredTopic[T](name: String, topic: Topic[T],filter: String,params: List[String])
-  (implicit m: Manifest[T]): ContentFilteredTopic[T]  = new ContentFilteredTopicImpl[T](name, topic, filter, params)
+  def createContentFilteredTopic[T](name: String, topic: Topic[T], query: Query)
+  (implicit m: Manifest[T]): ContentFilteredTopic[T]  = new ContentFilteredTopicImpl[T](name, topic, query)
 
 }
 	

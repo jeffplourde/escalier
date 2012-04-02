@@ -109,6 +109,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
   }
 
 
+
   private def takei(sampleState: Int,
                     viewState: Int,
                     instanceState: Int,
@@ -127,12 +128,24 @@ class DataReaderImpl[T](p: SubscriberImpl,
     }
   }
 
+  def lookupInstance(instance: T): Option[Long] = {
+    val handle = FooDataReaderImpl.lookupInstance(ddsPeer,copyCache, instance)
+    if (handle != DDS.HANDLE_NIL.value) Some(handle) else None
+  }
+
+  def read(handle: Long) = {
+    readi(DDS.NOT_READ_SAMPLE_STATE.value, handle)
+  }
 
   def read(instance: T): Array[T] = {
     val handle = FooDataReaderImpl.lookupInstance(ddsPeer,copyCache, instance)
     if (handle != DDS.HANDLE_NIL.value)
       readi(DDS.NOT_READ_SAMPLE_STATE.value, handle)
     else noData
+  }
+
+  def history(handle: Long) = {
+    readi(DDS.ANY_SAMPLE_STATE.value, handle)
   }
 
   def history(instance: T): Array[T] = {

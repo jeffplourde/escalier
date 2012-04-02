@@ -41,15 +41,18 @@ abstract class DataReader[T](val sub: Subscriber,
 
   val reactions = new Reactions.Impl
 
-  def read(s: SampleSelector): Array[T]
+  def read(s: SampleSelector): Array[T]    
 
   def read: Array[T] =  this.read(SampleSelector.NewData)
 
   def read(n: Int, s: SampleSelector = SampleSelector.NewData): Array[T]
   def read(instance: T): Array[T]
+  def read(handle: Long): Array[T]
+
   def read[SampleSeqHolder](data: SampleSeqHolder)
 
   def take(s: SampleSelector): Array[T]
+  // def take(handle: Long): Array[T]
   def take: Array[T] = this.take(SampleSelector.NewData)
   def take(n: Int, s: SampleSelector = SampleSelector.NewData): Array[T]
 
@@ -58,4 +61,7 @@ abstract class DataReader[T](val sub: Subscriber,
   }
   def history(instance: T): Array[T]
 
+  def history(handle: Long): Array[T]
+
+  def lookupInstance(instance: T): Option[Long]
 }
