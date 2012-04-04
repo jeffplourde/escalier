@@ -108,7 +108,8 @@ object IShapeApplication extends SimpleSwingApplication {
 	
 	
 	def top = new MainFrame {
-		title = "DDS IShape"
+		title = "DDS IShape on Domain " + sys.props.getOrElse("dds.domainId", "0") +
+		        " and Partition: " + sys.props.getOrElse("dds.partition", "default partition")
 		resizable = false
 		contents = new BoxPanel(Orientation.Horizontal) {
 			border = Swing.EmptyBorder(10, 10, 10, 10)
@@ -218,9 +219,11 @@ object IShapeApplication extends SimpleSwingApplication {
 	
 	override def startup(args: Array[String]): Unit = {
 		super.startup(args)
-		ShapesManager start()
 		if (args.length > 0)
 			sys.props +=(("dds.domainId", args(0)))
+		if (args.length > 1)
+			sys.props +=(("dds.partition", args(1)))
+		ShapesManager start()
 		println("IShapeApplication starting on domain " + ShapesDDSTopics.domainId)
 	}
 	

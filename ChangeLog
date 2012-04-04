@@ -1,12 +1,24 @@
+2012-04-04  Julien Enoch
+
+	* Added apply() operations to DataReader and DataWriter.
+
+	* Added management of dds.domainId and dds.partition properties to iShapes demo.
+
+
+2012-04-02  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Updated ContentFilteredTopic to use Query class so to be consistent to the new C++ DDS API.
+
+
 2012-02-22  Julien Enoch
 
-* Added missing QoS Policies. 
+	* Added missing QoS Policies. 
 
-* Added apply() operation to *Qos objects with a list of appropriate Policies.
+	* Added apply() operation to *Qos objects with a list of appropriate Policies.
 
-* Added + and ++ operators to *Qos classes.
+	* Added + and ++ operators to *Qos classes.
 
-* Updated iShapes demo adding QoS Policies management.
+	* Updated iShapes demo adding QoS Policies management.
 
 
 2012-02-10  Angelo Corsaro  <angelo@icorsaro.net>

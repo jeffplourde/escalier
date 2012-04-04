@@ -1,3 +1,17 @@
+Escalier v0.4.1
+=============================================================================
+
+ * Updated ContentFilteredTopic to use Query class so to be consistent
+   to the new C++ DDS API
+
+ * Added apply() operations to DataReader and DataWriter:
+     * one with PublisherQos/SubscriberQos parameter
+     * one with Partitions list parameter
+
+ * Added management of dds.domainId and dds.partition properties
+   to iShapes demo
+
+
 Escalier v0.4
 =============================================================================
 

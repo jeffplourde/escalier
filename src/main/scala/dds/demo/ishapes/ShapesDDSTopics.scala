@@ -5,11 +5,14 @@ import dds._
 import dds.pub.{Publisher, DataWriter}
 import dds.sub.{Subscriber, DataReader}
 import scala.sys.SystemProperties
+import qos.{PublisherQos, SubscriberQos}
+import dds.qos.Partition
 
 
 object ShapesDDSTopics {
   
     lazy val domainId = sys.props.getOrElse("dds.domainId", "0")
+    lazy val partition = sys.props.getOrElse("dds.partition", "")
 	
     lazy val domainParticipant = DomainParticipant(domainId.toInt)
   
@@ -21,11 +24,17 @@ object ShapesDDSTopics {
 	
 	def getDataWriter(kind: ShapeKind) = {
     	println("Create DataWriter for " + kind + " with qos: " + WriterQosDialog.qos)
-		DataWriter[ShapeType](topics(kind), WriterQosDialog.qos)
+		DataWriter[ShapeType](
+		        topics(kind),
+		        WriterQosDialog.qos,
+		        partition)
     }
 	
 	def getDataReader(kind: ShapeKind) = {
     	println("Create DataReader for " + kind + " with qos: " + ReaderQosDialog.qos)
-		DataReader[ShapeType](topics(kind), ReaderQosDialog.qos)
+		DataReader[ShapeType](
+		        topics(kind),
+		        ReaderQosDialog.qos,
+		        partition)
 	}
 }
