@@ -41,7 +41,7 @@ object DataReader {
     def apply[T](t: BaseTopic[T],
                  qos: DataReaderQos,
                  partitions: String*) (implicit m: Manifest[T]) = {
-        def sub = Subscriber(t.dp, SubscriberQos(Partition(partitions toList)))
+        def sub = Subscriber(t.dp, SubscriberQos(partitions toList))
         sub.createDataReader(t, qos)
     }
 

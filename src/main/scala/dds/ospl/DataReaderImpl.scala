@@ -54,11 +54,11 @@ class DataReaderImpl[T](p: SubscriberImpl,
       case NewData =>
         readi(DDS.NOT_READ_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
-          DDS.ANY_INSTANCE_STATE.value, n)
+          DDS.ALIVE_INSTANCE_STATE.value, n)
       case AllData =>
         readi(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
-          DDS.ANY_INSTANCE_STATE.value, n)
+          DDS.ALIVE_INSTANCE_STATE.value, n)
       case AllSamples =>
         readi(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
@@ -74,11 +74,11 @@ class DataReaderImpl[T](p: SubscriberImpl,
       case NewData =>
         takei(DDS.NOT_READ_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
-          DDS.ANY_INSTANCE_STATE.value, n)
+          DDS.ALIVE_INSTANCE_STATE.value, n)
       case AllData =>
         takei(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
-          DDS.ANY_INSTANCE_STATE.value, n)
+          DDS.ALIVE_INSTANCE_STATE.value, n)
       case AllSamples =>
         takei(DDS.ANY_SAMPLE_STATE.value,
           DDS.ANY_VIEW_STATE.value,
@@ -106,6 +106,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
       case va: Array[_] => va.asInstanceOf[Array[T]]
       case _ => throw new RuntimeException
     }
+
   }
 
 
@@ -170,6 +171,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
       case va: Array[_] => va.asInstanceOf[Array[T]]
       case _ => throw new RuntimeException
     }
+
   }
 
   // -- Listener Implementation

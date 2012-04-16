@@ -40,7 +40,7 @@ object DataWriter {
                  qos: DataWriterQos,
                  partitions: String*)
                 (implicit m: Manifest[T]) = {
-        def pub = Publisher(t.dp, PublisherQos(Partition(partitions toList)))
+        def pub = Publisher(t.dp, PublisherQos(partitions toList))
         pub.createDataWriter(t, qos)
     }
 
