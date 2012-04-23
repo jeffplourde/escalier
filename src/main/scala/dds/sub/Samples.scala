@@ -4,7 +4,7 @@ import DDS.SampleInfo
 import collection.IndexedSeqOptimized
 
 object Samples {
-  implicit def samples2Data[T](s: Samples[T]): Iterator[T] = s.data.iterator
+  implicit def samples2Data[T](s: Samples[T]): IndexedSeqOptimized[T, Array[T]] = s.data
 }
 /**
  * This class represent a collections of samples and associated samples

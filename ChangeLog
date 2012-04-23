@@ -1,5 +1,9 @@
 2012-04-23  Angelo Corsaro  <angelo@icorsaro.net>
 
+	* src/main/scala/dds/sub/Samples.scala: Changed sample2Data
+	implicit conversion to return an IndexedSeqOptimized as opposed to
+	an Iterator.
+
 	* Updated read/take methods on the DataReader to give access to the
 	sample info along with the sample data. An implicit conversion allows
 	to use the read/take as in the previous API.
