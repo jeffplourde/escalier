@@ -1,3 +1,11 @@
+2012-04-23  Angelo Corsaro  <angelo@icorsaro.net>
+
+	* Updated read/take methods on the DataReader to give access to the
+	sample info along with the sample data. An implicit conversion allows
+	to use the read/take as in the previous API.
+
+	* Moved escalier to Scala v2.9.2
+
 2012-04-04  Julien Enoch
 
 	* Added apply() operations to DataReader and DataWriter.

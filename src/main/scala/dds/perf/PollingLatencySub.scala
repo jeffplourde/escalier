@@ -23,12 +23,12 @@ object PolllingLatencySub {
     val reader = DataReader[SeqPayload](rtopic, drqos)
 
     while (true) {
-      var data: Array[SeqPayload] = null
+      var s: Samples[SeqPayload] = null
       do {
-        data = reader.read
+        s = reader.read
       }
-      while(data.length == 0)
-      writer ! data(0)
+      while(s.length == 0)
+      writer ! s.data(0)
     }
   }
 

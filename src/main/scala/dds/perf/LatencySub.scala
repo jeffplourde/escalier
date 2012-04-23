@@ -24,7 +24,7 @@ object LatencySub {
 
     reader.reactions += {
       case e: DataAvailable[_] => {
-        val data: Array[SeqPayload] = e[SeqPayload].reader.read
+        val data = reader.read.data
         writer ! data(0)
       }
     }

@@ -1,3 +1,11 @@
+Escalier v0.4.2
+=============================================================================
+ * Updated read/take methods on the DataReader to give access to the
+   sample info along with the sample data. An implicit conversion allows
+   to use the read/take as in the previous API.
+
+ * Moved escalier to Scala v2.9.2
+ 
 Escalier v0.4.1
 =============================================================================
 

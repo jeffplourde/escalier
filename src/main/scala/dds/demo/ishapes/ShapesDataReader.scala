@@ -10,9 +10,7 @@ abstract class ShapesDataReader {
 	
 	implicit def ShapeTypeToShapeComponent(data: ShapeType): ShapeComponent
 	
-	def read: Array[ShapeComponent] = {
-		for (shape <- (datareader history)) yield ShapeTypeToShapeComponent(shape)
-	}
+	def read: Array[ShapeComponent] = (datareader.history.data) map(s =>  ShapeTypeToShapeComponent(s))
 }
 
 class CircleDataReader extends ShapesDataReader {

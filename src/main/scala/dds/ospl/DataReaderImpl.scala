@@ -5,7 +5,8 @@ import dds.ospl.Runtime._
 import dds.BaseTopic
 import java.lang.RuntimeException
 import org.opensplice.dds.dcps.FooDataReaderImpl
-import dds.sub.{SampleSelector, DataReader}
+import dds.sub.{SampleSelector, DataReader, Samples}
+import DDS.SampleInfo
 
 class DataReaderImpl[T](p: SubscriberImpl,
                         t: BaseTopic[T],
@@ -13,7 +14,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
                        (implicit m: Manifest[T]) extends DataReader[T](p, t, qos) {
 
 
-  private val noData = new Array[T](0)
+  private val noData = new Samples(new Array[T](0), new Array[SampleInfo](0))
 
   private var copyCache: Long = getCopyCache()
 
@@ -48,7 +49,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
       DDS.NOT_READ_SAMPLE_STATE.value, DDS.ANY_VIEW_STATE.value, DDS.ALIVE_INSTANCE_STATE.value)
   }
 
-  def read(n: Int, s: SampleSelector = SampleSelector.NewData): Array[T] = {
+  def read(n: Int, s: SampleSelector = SampleSelector.NewData): Samples[T] = {
     import dds.sub.SampleSelector._
     s match {
       case NewData =>
@@ -92,7 +93,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
   private def readi(sampleState: Int,
                     viewState: Int,
                     instanceState: Int,
-                    n: Int): Array[T] = {
+                    n: Int): Samples[T] = {
     import org.opensplice.dds.dcps.FooDataReaderImpl
     val data = dataSeqClass.newInstance
     val infoSeq = new DDS.SampleInfoSeqHolder
@@ -100,13 +101,9 @@ class DataReaderImpl[T](p: SubscriberImpl,
     FooDataReaderImpl.read(ddsPeer, copyCache, data, infoSeq, n,
       sampleState, viewState, instanceState)
 
-    val value = valueField.get(data)
-
-    value match {
-      case va: Array[_] => va.asInstanceOf[Array[T]]
-      case _ => throw new RuntimeException
-    }
-
+    val value = (valueField.get(data))
+    val va = value.asInstanceOf[Array[T]]
+    new Samples[T](va, infoSeq.value)
   }
 
 
@@ -114,7 +111,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
   private def takei(sampleState: Int,
                     viewState: Int,
                     instanceState: Int,
-                    n: Int = DDS.LENGTH_UNLIMITED.value): Array[T] = {
+                    n: Int = DDS.LENGTH_UNLIMITED.value) = {
     import org.opensplice.dds.dcps.FooDataReaderImpl
     val data = dataSeqClass.newInstance
     val infoSeq = new DDS.SampleInfoSeqHolder
@@ -122,11 +119,8 @@ class DataReaderImpl[T](p: SubscriberImpl,
       sampleState, viewState, instanceState)
 
     val value = valueField.get(data)
-
-    value match {
-      case va: Array[_] => va.asInstanceOf[Array[T]]
-      case _ => throw new RuntimeException
-    }
+    val va = value.asInstanceOf[Array[T]]
+    new Samples[T](va, infoSeq.value)
   }
 
   def lookupInstance(instance: T): Option[Long] = {
@@ -138,7 +132,7 @@ class DataReaderImpl[T](p: SubscriberImpl,
     readi(DDS.NOT_READ_SAMPLE_STATE.value, handle)
   }
 
-  def read(instance: T): Array[T] = {
+  def read(instance: T) = {
     val handle = FooDataReaderImpl.lookupInstance(ddsPeer,copyCache, instance)
     if (handle != DDS.HANDLE_NIL.value)
       readi(DDS.NOT_READ_SAMPLE_STATE.value, handle)
@@ -149,14 +143,14 @@ class DataReaderImpl[T](p: SubscriberImpl,
     readi(DDS.ANY_SAMPLE_STATE.value, handle)
   }
 
-  def history(instance: T): Array[T] = {
+  def history(instance: T) = {
     val handle = FooDataReaderImpl.lookupInstance(ddsPeer,copyCache, instance)
     if (handle != DDS.HANDLE_NIL.value)
       readi(DDS.ANY_SAMPLE_STATE.value, handle)
     else noData
   }
 
-  private def readi(sampleState: Int, handle: Long): Array[T] = {
+  private def readi(sampleState: Int, handle: Long) = {
     import org.opensplice.dds.dcps.FooDataReaderImpl
     val data = dataSeqClass.newInstance
     val infoSeq = new DDS.SampleInfoSeqHolder
@@ -166,12 +160,8 @@ class DataReaderImpl[T](p: SubscriberImpl,
       DDS.ALIVE_INSTANCE_STATE.value)
 
     val value = valueField.get(data)
-
-    value match {
-      case va: Array[_] => va.asInstanceOf[Array[T]]
-      case _ => throw new RuntimeException
-    }
-
+    val va = value.asInstanceOf[Array[T]]
+    new Samples(va, infoSeq.value)
   }
 
   // -- Listener Implementation
