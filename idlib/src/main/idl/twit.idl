@@ -1,9 +1,0 @@
-module dds { module demo { module twitter { module gen {
-
-    struct Twit {
-        string name;
-        string msg;
-    };
-#pragma keylist Twit name
-
-}; }; }; };
