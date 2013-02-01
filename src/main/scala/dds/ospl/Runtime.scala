@@ -134,7 +134,12 @@ object Runtime {
     def copy(p: Partition, ddsP: DDS.PartitionQosPolicy) = {
         ddsP.name = (p.partitions toArray)
     }
-    
+
+    def copy(wdl: WriterDataLifecycle, ddsWdl: DDS.WriterDataLifecycleQosPolicy) = {
+        ddsWdl.autodispose_unregistered_instances = wdl.autodisposeUnregisteredInstances
+        copyDuration(wdl.autopurgeSuspendedSamplesDelay, ddsWdl.autopurge_suspended_samples_delay)
+        copyDuration(wdl.autounregisterInstanceDelay, ddsWdl.autounregister_instance_delay)
+    }
     
     def topicQos2DDSQos(dp: dds.DomainParticipant, qos: dds.qos.TopicQos) : DDS.TopicQos = {
 
@@ -215,9 +220,9 @@ object Runtime {
         copy(qos.reliability, ddsQos.reliability)
         copy(qos.resourceLimits, ddsQos.resource_limits)
         copy(qos.transportPriority, ddsQos.transport_priority)
+        copy(qos.writerDataLifecycle, ddsQos.writer_data_lifecycle)
 
         ddsQos
-
     }
 
     implicit def topic2DDSTopic(t: TopicImpl[_]) : DDS.Topic = {
