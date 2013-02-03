@@ -154,6 +154,21 @@ object Durability {
   val DefaultValue: Durability = Volatile
 }
 
+case class WriterDataLifecycle(val autodisposeUnregisteredInstances: Boolean,
+                               val autopurgeSuspendedSamplesDelay: Duration,
+                               val autounregisterInstanceDelay: Duration) 
+  extends Policy 
+  with DataWriterPolicy  
+{
+  def name = "WriterDataLifecycle"
+  def id = 16
+  override def toString = name
+}
+
+object WriterDataLifecycle {
+  val DefaultValue: WriterDataLifecycle = WriterDataLifecycle(true, Duration.infinite, Duration.infinite)
+}
+
 case class TopicData(val value: Array[Byte]) extends Policy
 	with TopicPolicy
 {
